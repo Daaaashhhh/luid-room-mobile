@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,12 +9,13 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import ModernDesign from '../../assets/images/modern.jpg'
-import BohemianDesign from '../../assets/images/bohemian.jpeg'
-import IndustrialDesign from '../../assets/images/industrial.jpg'
-import ScandinavianDesign from '../../assets/images/scandinavian.jpg'
+import ModernDesign from '../../assets/images/modern.jpg';
+import BohemianDesign from '../../assets/images/bohemian.jpeg';
+import IndustrialDesign from '../../assets/images/industrial.jpg';
+import ScandinavianDesign from '../../assets/images/scandinavian.jpg';
+import apiService from '../services/apiService';
 
 const PlusIcon = () => (
   <View style={styles.plusIcon}>
@@ -23,23 +24,20 @@ const PlusIcon = () => (
   </View>
 );
 
-const DesignChoice = ({ title, image, description, selected, onPress }) => (
-  <TouchableOpacity 
-    style={[styles.designChoice, selected && styles.designChoiceSelected]} 
-    onPress={onPress}
-  >
-    <Image 
-      source={image} 
-      style={styles.designChoiceImage}
-      resizeMode="cover"
-    />
+const DesignChoice = ({title, image, description, selected, onPress}) => (
+  <TouchableOpacity
+    style={[styles.designChoice, selected && styles.designChoiceSelected]}
+    onPress={onPress}>
+    <Image source={image} style={styles.designChoiceImage} resizeMode="cover" />
     <View style={styles.designChoiceContent}>
-      <Text style={[styles.designChoiceTitle, selected && styles.designChoiceTextSelected]}>
+      <Text
+        style={[
+          styles.designChoiceTitle,
+          selected && styles.designChoiceTextSelected,
+        ]}>
         {title}
       </Text>
-      <Text style={styles.designChoiceDescription}>
-        {description}
-      </Text>
+      <Text style={styles.designChoiceDescription}>{description}</Text>
     </View>
   </TouchableOpacity>
 );
@@ -48,80 +46,72 @@ const CreateDesign = () => {
   const navigation = useNavigation();
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight = Dimensions.get('window').height;
-  const [state, setState] = useState({ scrollEnabled: true });
+  const [state, setState] = useState({scrollEnabled: true});
   const [selectedStyle, setSelectedStyle] = useState('modern');
   const designStyles = [
     {
       id: 'modern',
       title: 'Modern',
       image: ModernDesign,
-      description: 'Clean lines and minimal decoration'
+      description: 'Clean lines and minimal decoration',
     },
     {
       id: 'scandinavian',
       title: 'Scandinavian',
       image: ScandinavianDesign,
-      description: 'Light, airy and functional'
+      description: 'Light, airy and functional',
     },
     {
       id: 'industrial',
       title: 'Industrial',
       image: IndustrialDesign,
-      description: 'Raw materials and urban feel'
+      description: 'Raw materials and urban feel',
     },
     {
       id: 'bohemian',
       title: 'Bohemian',
       image: BohemianDesign,
-      description: 'Artistic and free-spirited'
+      description: 'Artistic and free-spirited',
     },
   ];
 
   const onMoveStart = () => {
-    setState({ scrollEnabled: false });
+    setState({scrollEnabled: false});
   };
   const onMoveEnd = () => {
-    setState({ scrollEnabled: true });
+    setState({scrollEnabled: true});
+  };
+
+  const handleSaveDesign = async () => {
+    try {
+      const response = await apiService.createDesign(designData);
+      // Handle the response
+    } catch (error) {
+      // Handle any UI-specific error states
+    }
   };
 
   return (
     <LinearGradient colors={['#fcedf2', '#fffafb']} style={styles.background}>
       <View style={styles.contentContainer}>
         <Text style={styles.sectionTitle}>Choose Your Style</Text>
-        
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          style={styles.choicesContainer}
-          contentContainerStyle={styles.choicesContentContainer}
-        >
-          {designStyles.map((style) => (
-            <DesignChoice
-              key={style.id}
-              {...style}
-              selected={selectedStyle === style.id}
-              onPress={() => setSelectedStyle(style.id)}
-            />
-          ))}
-        </ScrollView>
 
         <View style={styles.card}>
           <View style={styles.iconContainer}>
             <PlusIcon />
           </View>
-          
+
           <Text style={styles.cardTitle}>Start Your First Design</Text>
           <Text style={styles.cardSubtitle}>
             Transform any room with AI-powered interior design.
           </Text>
           <Text style={styles.uploadText}>Upload a photo to begin.</Text>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.button}
             onPress={() => {
               navigation.navigate('Generate Image');
-            }}
-          >
+            }}>
             <Text style={styles.buttonText}>Create New Design</Text>
           </TouchableOpacity>
         </View>
@@ -130,7 +120,7 @@ const CreateDesign = () => {
   );
 };
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   background: {
