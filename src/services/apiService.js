@@ -60,10 +60,13 @@ const apiService = {
 
   // Design endpoints
   createDesign: designData => api.post('/designs', designData),
-  getDesigns: () => api.get('/designs'),
-  getDesignById: id => api.get(`/designs/${id}`),
+  getMyDesigns: () => api.get('/designs/my-designs'),
+  getDesignById: id => api.get(`/designs/design/${id}`),
   updateDesign: (id, data) => api.put(`/designs/${id}`, data),
-  deleteDesign: id => api.delete(`/designs/${id}`),
+  toggleFavorite: (id, isFavorite) =>
+    api.put(`/designs/design/${id}`, {isFavorite}),
+  getFavorites: () => api.get('/designs/favorites'),
+  deleteDesign: id => api.delete(`/designs/design/${id}`),
 
   // Image generation endpoints
   generateImage: async formData => {

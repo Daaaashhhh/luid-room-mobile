@@ -23,6 +23,8 @@ import CreateDesign from '../screens/CreateDesign';
 import GenerateImage from '../screens/GenerateImage';
 import SplashScreen from '../screens/SplashScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import MyDesigns from '../screens/MyDesigns';
+import FavoritesScreen from '../screens/FavoritesScreen';
 
 // Import assets
 import Menu from '../../assets/images/menu.png';
@@ -122,6 +124,18 @@ const CustomDrawerContent = ({navigation}) => {
           onPress={() => navigation.navigate('Generate Image')}>
           <Text style={styles.drawerItemText}>Generate Image</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.drawerItem}
+          onPress={() => navigation.navigate('My Designs')}>
+          <Text style={styles.drawerItemText}>My Designs</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.drawerItem}
+          onPress={() => navigation.navigate('Favorites')}>
+          <Text style={styles.drawerItemText}>Favorites</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Logout Button */}
@@ -165,6 +179,8 @@ const MainDrawer = () => {
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="Create Design" component={CreateDesign} />
       <Drawer.Screen name="Generate Image" component={GenerateImage} />
+      <Drawer.Screen name="My Designs" component={MyDesigns} />
+      <Drawer.Screen name="Favorites" component={FavoritesScreen} />
     </Drawer.Navigator>
   );
 };
