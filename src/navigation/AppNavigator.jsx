@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   TouchableOpacity,
   Image,
@@ -13,6 +14,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // Import screens
 import LoginScreen from '../screens/LoginScreen';
@@ -25,6 +27,7 @@ import SplashScreen from '../screens/SplashScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import MyDesigns from '../screens/MyDesigns';
 import FavoritesScreen from '../screens/FavoritesScreen';
+import ContactScreen from '../screens/ContactScreen';
 
 // Import assets
 import Menu from '../../assets/images/menu.png';
@@ -33,6 +36,7 @@ import apiService from '../services/apiService';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 // Custom Drawer Content
 const CustomDrawerContent = ({navigation}) => {
@@ -103,46 +107,141 @@ const CustomDrawerContent = ({navigation}) => {
       <View style={styles.drawerBody}>
         <TouchableOpacity
           style={styles.drawerItem}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => {
+            navigation.navigate('MainTabs', {
+              screen: 'HomeTab',
+            });
+          }}>
+          <Icon name="home-outline" size={24} color="#2D3436" />
           <Text style={styles.drawerItemText}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.drawerItem}
-          onPress={() => navigation.navigate('Profile')}>
+          onPress={() => {
+            navigation.navigate('MainTabs', {
+              screen: 'ProfileTab',
+            });
+          }}>
+          <Icon name="person-outline" size={24} color="#2D3436" />
           <Text style={styles.drawerItemText}>Profile</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.drawerItem}
           onPress={() => navigation.navigate('Create Design')}>
+          <Icon name="add-circle-outline" size={24} color="#2D3436" />
           <Text style={styles.drawerItemText}>Create Design</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.drawerItem}
           onPress={() => navigation.navigate('Generate Image')}>
+          <Icon name="image-outline" size={24} color="#2D3436" />
           <Text style={styles.drawerItemText}>Generate Image</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.drawerItem}
-          onPress={() => navigation.navigate('My Designs')}>
+          onPress={() => {
+            navigation.navigate('MainTabs', {
+              screen: 'MyDesignsTab',
+            });
+          }}>
+          <Icon name="images-outline" size={24} color="#2D3436" />
           <Text style={styles.drawerItemText}>My Designs</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.drawerItem}
-          onPress={() => navigation.navigate('Favorites')}>
+          onPress={() => {
+            navigation.navigate('MainTabs', {
+              screen: 'FavoritesTab',
+            });
+          }}>
+          <Icon name="heart-outline" size={24} color="#2D3436" />
           <Text style={styles.drawerItemText}>Favorites</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.drawerItem}
+          onPress={() => navigation.navigate('Contact')}>
+          <Icon name="mail-outline" size={24} color="#2D3436" />
+          <Text style={styles.drawerItemText}>Contact Us</Text>
         </TouchableOpacity>
       </View>
 
       {/* Logout Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Icon name="log-out-outline" size={24} color="#FF7B7B" />
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>
+  );
+};
+
+// Tab Navigator
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 60,
+          paddingBottom: 10,
+        },
+        tabBarActiveTintColor: '#FF7B7B',
+        tabBarInactiveTintColor: '#636E72',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'Outfit-Medium',
+        },
+      }}>
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="home-outline" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="MyDesignsTab"
+        component={MyDesigns}
+        options={{
+          tabBarLabel: 'My Designs',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="images-outline" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="FavoritesTab"
+        component={FavoritesScreen}
+        options={{
+          tabBarLabel: 'Favorites',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="heart-outline" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="person-outline" size={24} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 
@@ -163,7 +262,12 @@ const MainDrawer = () => {
         ),
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => {
+              // Navigate to the MainTabs first, then to ProfileTab
+              navigation.navigate('MainTabs', {
+                screen: 'ProfileTab',
+              });
+            }}
             style={styles.headerIcon}>
             <Image source={Profile} style={styles.profileIcon} />
           </TouchableOpacity>
@@ -175,12 +279,10 @@ const MainDrawer = () => {
           />
         ),
       })}>
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Drawer.Screen name="MainTabs" component={TabNavigator} />
       <Drawer.Screen name="Create Design" component={CreateDesign} />
       <Drawer.Screen name="Generate Image" component={GenerateImage} />
-      <Drawer.Screen name="My Designs" component={MyDesigns} />
-      <Drawer.Screen name="Favorites" component={FavoritesScreen} />
+      <Drawer.Screen name="Contact" component={ContactScreen} />
     </Drawer.Navigator>
   );
 };
@@ -297,7 +399,7 @@ const styles = StyleSheet.create({
   drawerItemText: {
     fontSize: 16,
     color: '#2D3436',
-    marginLeft: 32,
+    marginLeft: 16,
     fontFamily: 'Outfit-Medium',
   },
   logoutButton: {
@@ -305,12 +407,22 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#E9ECEF',
     marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logoutButtonText: {
     fontSize: 16,
     color: '#FF7B7B',
-    textAlign: 'center',
+    marginLeft: 8,
     fontFamily: 'Outfit-Bold',
+  },
+  tabIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabIcon: {
+    fontSize: 24,
   },
 });
 

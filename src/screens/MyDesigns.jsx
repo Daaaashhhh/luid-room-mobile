@@ -99,72 +99,78 @@ const MyDesigns = ({navigation}) => {
     };
 
     return (
-      <View style={styles.designCard}>
-        <View style={styles.designHeader}>
-          <Text style={styles.designTitle}>Design #{item.id.slice(0, 8)}</Text>
-          <Text style={styles.designDate}>
-            {new Date(item.createdAt).toLocaleDateString()}
-          </Text>
-        </View>
+      <View>
+        <View style={styles.designCard}>
+          <View style={styles.designHeader}>
+            <Text style={styles.designTitle}>
+              Design #{item.id.slice(0, 8)}
+            </Text>
+            <Text style={styles.designDate}>
+              {new Date(item.createdAt).toLocaleDateString()}
+            </Text>
+          </View>
 
-        <View style={styles.sliderContainer}>
-          <Compare
-            initial={windowWidth / 2}
-            draggerWidth={50}
-            width={windowWidth - 48}
-            height={(windowWidth - 48) * 0.75}
-            onMoveStart={onMoveStart}
-            onMoveEnd={onMoveEnd}>
-            <Before>
-              <Image
-                source={{uri: item.originalImageUrl}}
-                style={styles.sliderImage}
-                resizeMode="cover"
-              />
-            </Before>
-            <After>
-              <Image
-                source={{uri: item.generatedImageUrl}}
-                style={styles.sliderImage}
-                resizeMode="cover"
-              />
-            </After>
-            <DefaultDragger />
-          </Compare>
-        </View>
+          <View style={styles.sliderContainer}>
+            <Compare
+              initial={windowWidth / 2}
+              draggerWidth={50}
+              width={windowWidth - 48}
+              height={(windowWidth - 48) * 0.75}
+              onMoveStart={onMoveStart}
+              onMoveEnd={onMoveEnd}>
+              <Before>
+                <Image
+                  source={{uri: item.originalImageUrl}}
+                  style={styles.sliderImage}
+                  resizeMode="cover"
+                />
+              </Before>
+              <After>
+                <Image
+                  source={{uri: item.generatedImageUrl}}
+                  style={styles.sliderImage}
+                  resizeMode="cover"
+                />
+              </After>
+              <DefaultDragger />
+            </Compare>
+          </View>
 
-        <View style={styles.designInfo}>
-          <Text style={styles.designPrompt}>{item.prompt}</Text>
-          <View style={styles.designMeta}>
-            <View style={styles.tagContainer}>
-              <Text style={styles.tag}>{item.roomType.replace('_', ' ')}</Text>
-              <Text style={styles.tag}>{item.style}</Text>
-            </View>
+          <View style={styles.designInfo}>
+            <Text style={styles.designPrompt}>{item.prompt}</Text>
+            <View style={styles.designMeta}>
+              <View style={styles.tagContainer}>
+                <Text style={styles.tag}>
+                  {item.roomType.replace('_', ' ')}
+                </Text>
+                <Text style={styles.tag}>{item.style}</Text>
+              </View>
 
-            <View style={styles.actionButtons}>
-              <TouchableOpacity
-                style={[
-                  styles.actionButton,
-                  item.isFavorite && styles.favoriteActive,
-                ]}
-                onPress={() => handleFavorite(item.id, item.isFavorite)}>
-                <Text
+              <View style={styles.actionButtons}>
+                <TouchableOpacity
                   style={[
-                    styles.actionButtonText,
-                    item.isFavorite && styles.favoriteActiveText,
-                  ]}>
-                  {item.isFavorite ? 'Favorited' : 'Favorite'}
-                </Text>
-              </TouchableOpacity>
+                    styles.actionButton,
+                    item.isFavorite && styles.favoriteActive,
+                  ]}
+                  onPress={() => handleFavorite(item.id, item.isFavorite)}>
+                  <Text
+                    style={[
+                      styles.actionButtonText,
+                      item.isFavorite && styles.favoriteActiveText,
+                    ]}>
+                    {item.isFavorite ? 'Added to Favorites' : 'Favorite'}
+                  </Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[styles.actionButton, styles.deleteButton]}
-                onPress={() => handleDelete(item.id)}>
-                <Text
-                  style={[styles.actionButtonText, styles.deleteButtonText]}>
-                  Delete
-                </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.deleteButton]}
+                  onPress={() => handleDelete(item.id)}>
+                  <Text
+                    style={[styles.actionButtonText, styles.deleteButtonText]}>
+                    Delete
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -193,6 +199,8 @@ const MyDesigns = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>My Designs</Text>
+      <Text style={styles.subHeading}>All your generated designs</Text>
       <FlatList
         data={designs}
         renderItem={renderDesignItem}
@@ -221,10 +229,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
+    paddingTop: 80,
   },
   listContainer: {
     padding: 16,
-    paddingTop: 80,
     paddingBottom: 32,
   },
   centerContainer: {
@@ -368,6 +376,19 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     color: '#FF4757',
+  },
+  heading: {
+    fontSize: 32,
+    color: '#2D3436',
+    fontFamily: 'Outfit-Bold',
+    textAlign: 'center',
+  },
+  subHeading: {
+    fontSize: 16,
+    color: '#636E72',
+    fontFamily: 'Outfit-Regular',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
 

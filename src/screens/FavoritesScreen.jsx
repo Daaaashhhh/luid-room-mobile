@@ -145,6 +145,8 @@ const FavoritesScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>Favorite Designs</Text>
+      <Text style={styles.subHeading}>Your collection of saved designs</Text>
       <FlatList
         data={favorites}
         renderItem={renderDesignItem}
@@ -171,10 +173,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
+    paddingTop: 80,
   },
   listContainer: {
     padding: 16,
-    paddingTop: 80,
     paddingBottom: 32,
   },
   centerContainer: {
@@ -307,6 +309,19 @@ const styles = StyleSheet.create({
   },
   favoriteActiveText: {
     color: '#FF7B7B',
+  },
+  heading: {
+    fontSize: 32,
+    color: '#2D3436',
+    fontFamily: 'Outfit-Bold',
+    textAlign: 'center',
+  },
+  subHeading: {
+    fontSize: 16,
+    color: '#636E72',
+    fontFamily: 'Outfit-Regular',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
 
